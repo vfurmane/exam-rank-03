@@ -6,7 +6,7 @@
 /*   By: vfurmane <vfurmane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 09:01:47 by vfurmane          #+#    #+#             */
-/*   Updated: 2021/11/01 10:25:29 by vfurmane         ###   ########.fr       */
+/*   Updated: 2021/11/01 10:28:55 by vfurmane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int	draw_map(FILE* operation_file)
 	ret = fscanf(operation_file, "%d %d %c", &config.width, &config.height,
 		&config.fill_chr);
 	if (ret == 0 || ret == EOF)
+		return (-1);
+	if (config.width <= 0 || config.width > 300
+		|| config.height <= 0 || config.height > 300)
 		return (-1);
 	config.total_size = (config.width + 1) * config.height;
 	map = init_map(&config);
