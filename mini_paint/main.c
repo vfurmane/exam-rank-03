@@ -6,7 +6,7 @@
 /*   By: vfurmane <vfurmane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 09:01:47 by vfurmane          #+#    #+#             */
-/*   Updated: 2021/11/01 11:55:20 by vfurmane         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:41:13 by vfurmane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ int	draw_map(FILE* operation_file)
 	if (map == NULL)
 		return (-1);
 	if (draw_shapes(&config, map, operation_file) < 0)
+	{
+		free(map);
 		return (-1);
+	}
 	write(1, map, config.total_size);
 	free(map);
 	return (0);
