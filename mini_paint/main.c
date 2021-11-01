@@ -6,19 +6,11 @@
 /*   By: vfurmane <vfurmane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 09:01:47 by vfurmane          #+#    #+#             */
-/*   Updated: 2021/11/01 10:28:55 by vfurmane         ###   ########.fr       */
+/*   Updated: 2021/11/01 11:55:20 by vfurmane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_paint.h"
-
-typedef struct s_config
-{
-	int			width;
-	int			height;
-	char		fill_chr;
-	int			total_size;
-}				t_config;
 
 char	*init_map(t_config *config)
 {
@@ -33,13 +25,49 @@ char	*init_map(t_config *config)
 	return (map);
 }
 
+int	draw_shapes(const t_config *config, char *map, FILE *operation_file)
+{
+	int			ret;
+	float		distance;
+	t_circle	circle;
+
+	while ((ret = fscanf(operation_file, "%c %f %f %f %c\n", &circle.type, &circle.x, &circle.y, &circle.radius, &circle.chr)))
+	{
+		if (ret == EOF)
+			break ;
+		else if (ret == 0)
+			return (-1);
+		for (int line = 0; line < config->height; line++)
+		{
+			for (int col = 0; col < config->width; col++)
+			{
+				distance = sqrtf((col - circle.x) * (col - circle.x) + (line - circle.y) * (line - circle.y));
+				if (circle.type == 'C')
+				{
+					if (distance <= circle.radius)
+						map[(col * (config->width + 1) + line)] = circle.chr;
+				}
+				else if (circle.type == 'c')
+				{
+					if (distance == circle.radius
+						|| (circle.radius > distance && circle.radius - 1 < distance))
+						map[(col * (config->width + 1) + line)] = circle.chr;
+				}
+				else
+					return (-1);
+			}
+		}
+	}
+	return (0);
+}
+
 int	draw_map(FILE* operation_file)
 {
 	int			ret;
 	char		*map;
 	t_config	config;
 
-	ret = fscanf(operation_file, "%d %d %c", &config.width, &config.height,
+	ret = fscanf(operation_file, "%d %d %c\n", &config.width, &config.height,
 		&config.fill_chr);
 	if (ret == 0 || ret == EOF)
 		return (-1);
@@ -49,6 +77,8 @@ int	draw_map(FILE* operation_file)
 	config.total_size = (config.width + 1) * config.height;
 	map = init_map(&config);
 	if (map == NULL)
+		return (-1);
+	if (draw_shapes(&config, map, operation_file) < 0)
 		return (-1);
 	write(1, map, config.total_size);
 	free(map);
