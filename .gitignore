@@ -53,3 +53,7 @@ dkms.conf
 
 # Other
 .*.swp
+micro_paint
+!micro_paint/
+mini_paint
+!mini_paint/
