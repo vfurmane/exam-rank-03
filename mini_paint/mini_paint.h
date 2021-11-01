@@ -6,13 +6,14 @@
 /*   By: vfurmane <vfurmane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 09:01:18 by vfurmane          #+#    #+#             */
-/*   Updated: 2021/11/01 09:20:08 by vfurmane         ###   ########.fr       */
+/*   Updated: 2021/11/01 09:27:40 by vfurmane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_PAINT_H
 # define MINI_PAINT_H
 
+# include <stdio.h>
 # include <unistd.h>
 
 #endif
